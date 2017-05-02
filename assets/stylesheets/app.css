@@ -167,7 +167,3 @@ body, div, h1, h2, h3, h4, p, a, ul, li, input, textarea{
 .fa-pencil {
   cursor: pointer;
 }
-
-.red {
-  color: rgb(212, 25, 25);
-}

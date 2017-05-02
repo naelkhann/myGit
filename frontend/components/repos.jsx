@@ -66,7 +66,7 @@ class Repos extends React.Component {
 
     return (
       <div className="repos">
-        <h2>{`${user.name}'s`} Repositories</h2>
+        <h2>{ user.name ? `${user.name}'s Repositories` : ""}</h2>
         {reposDivs}
       </div>
     )

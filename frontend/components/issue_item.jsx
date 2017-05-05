@@ -1,6 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { updateIssueAction } from '../actions/issue_actions';
 
+const mapDispatchToProps = dispatch => ({
+  updateIssueAction: (repoName, issue) => dispatch(updateIssueAction(repoName, issue))
+})
 
 class IssueItem extends React.Component {
   constructor(props){
@@ -8,14 +12,43 @@ class IssueItem extends React.Component {
     this.state = {
       title: this.props.issue.title,
       body: this.props.issue.body,
+      number: this.props.issue.number,
+      state: this.props.issue.state,
       editing: false
     }
     this.toggleEditField = this.toggleEditField.bind(this);
+    this.submitEditIssue = this.submitEditIssue.bind(this);
+    this.toggleIssueState = this.toggleIssueState.bind(this);
   }
 
   update(field){
     return e => {
       this.setState({[field]: e.target.value})
+    }
+  }
+
+  submitEditIssue(e){
+    e.preventDefault();
+    let issue = { title: this.state.title, body: this.state.body, number: this.state.number}
+    if(this.state.state === "closed"){
+      issue["state"] = "open"
+    }
+    this.props.updateIssueAction(this.props.repoName, issue).then(() => {
+      this.setState({editing: false})
+    })
+  }
+
+  toggleIssueState(){
+    if(this.state.state === "open"){
+      let closeIssue = {state: "closed", number: this.state.number}
+      this.props.updateIssueAction(this.props.repoName, closeIssue).then(() => {
+        this.setState({editing: false})
+      })
+    } else {
+      let openIssue = {state: "open", number: this.state.number}
+      this.props.updateIssueAction(this.props.repoName, openIssue).then(() => {
+        this.setState({editing: false})
+      })
     }
   }
 
@@ -33,7 +66,11 @@ class IssueItem extends React.Component {
           <textarea className="issue-input" type="text" value={this.state.body} onChange={this.update('body')}/>
           <br />
           <br />
-          <input className="issue-btn gray" type="submit" value={`Edit #${issue.number}`}/>
+          <div className="issue-form-btns">
+            <input className="issue-btn gray" type="submit" value={`Edit #${issue.number}`}/>
+            <h4 className="issue-btn gray" onClick={this.toggleIssueState}>{this.state.state === "open" ? "Close Issue" : "Reopen Issue"}</h4>
+          </div>
+
         </form>
       )
     } else {
@@ -66,4 +103,4 @@ class IssueItem extends React.Component {
   }
 }
 
-export default IssueItem
+export default connect(null, mapDispatchToProps)(IssueItem)

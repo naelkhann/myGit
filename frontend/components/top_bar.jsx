@@ -18,7 +18,7 @@ class TopBar extends React.Component {
         </div>
         <div className="top-bar-info">
           <h4>Welcome to myGit.</h4>
-          <p>You are signed in {this.props.user.login}</p>
+          <p>You are signed in as {this.props.user.login}</p>
         </div>
       </div>
     )

@@ -1,4 +1,4 @@
-import { RECEIVE_ISSUES, RECEIVE_ISSUE } from '../actions/issue_actions';
+import { RECEIVE_ISSUES, RECEIVE_ISSUE, RECEIVE_EDITED_ISSUE } from '../actions/issue_actions';
 
 const IssueReducer = (prevState = {}, action) => {
   switch(action.type){
@@ -11,9 +11,17 @@ const IssueReducer = (prevState = {}, action) => {
       }
       return Object.assign({}, prevState, issues);
     case RECEIVE_ISSUE:
-      let repo_name = action.issue.repo_name
-      prevState.issues[repo_name].push(action.issue)
-      return Object.assign({}, prevState)
+      let receiveIssueState = Object.assign({}, prevState);
+      receiveIssueState[action.issue.repoName].unshift(action.issue)
+      return receiveIssueState;
+    case RECEIVE_EDITED_ISSUE:
+      let receiveEditedIssueState = Object.assign({}, prevState);
+      let repo = action.issue.repoName;
+      let issueNumber = action.issue.number;
+      let issueObj = receiveEditedIssueState[repo].find(issue => issue.number === issueNumber)
+      let issueIndex = receiveEditedIssueState[repo].indexOf(issueObj);
+      receiveEditedIssueState[repo][issueIndex] = action.issue;
+      return receiveEditedIssueState;
     default:
       return prevState;
   }

@@ -1,15 +1,17 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { requestRepos } from '../actions/user_actions';
+import { requestUser, requestRepos } from '../actions/user_actions';
 import RepoIssues from './repo_issues';
 
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
+  user: state.user,
   repos: state.repos
 })
 
 const mapDispatchToProps = dispatch => ({
+  requestUser: () => dispatch(requestUser()),
   requestRepos: () => dispatch(requestRepos())
 })
 
@@ -19,7 +21,7 @@ class Repos extends React.Component {
   }
 
   componentDidMount(){
-    this.props.requestRepos();
+    this.props.requestUser().then(() => this.props.requestRepos())
   }
 
   filterRepos(){
@@ -58,7 +60,7 @@ class Repos extends React.Component {
             </div>
           </div>
           <div className="repo-right">
-            <RepoIssues repoName={ repo.name }/>
+            <Link className="issue-btn" to={`repos/${repo.name}`}>View Issues</Link>
           </div>
         </div>
       )

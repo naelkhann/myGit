@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600');
+
 body, div, h1, h2, h3, h4, p, a, ul, li, input, textarea{
   margin: 0;
   padding: 0;
   border: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .top-bar {
@@ -11,15 +13,18 @@ body, div, h1, h2, h3, h4, p, a, ul, li, input, textarea{
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background-color: rgb(246, 200, 110);
-  padding: 5px 10px;
+  background-color: rgb(236, 236, 236);
+  padding: 5px 20px;
 }
 
-.top-bar-logo{
-}
 
 .top-bar-logo > img {
   height: 35px;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
 }
 
 .profile-info {
@@ -27,17 +32,24 @@ body, div, h1, h2, h3, h4, p, a, ul, li, input, textarea{
   justify-content: center;
   padding: 10px;
 }
+
 .profile-info--container {
   display: flex;
-  width: 700px;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  height: 650px;
+  border-radius: 5px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 
 }
 
-.profile-info--pic {
-  padding: 10px;
-  max-height: 255px;
+.profile-info--container img {
+  margin: 10px;
+  width: 225px;
+  border-radius: 4px;
 }
+
 
 .profile-info--details {
   padding: 10px 10px;
@@ -53,42 +65,52 @@ body, div, h1, h2, h3, h4, p, a, ul, li, input, textarea{
 }
 
 .profile-info--details-login {
+  text-decoration: none;
   font-size: 22px;
   color: rgb(180, 180, 180);
 }
 
 .profile-info--details--followers {
-  padding-top: 40px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.repos {
-  padding-top: 25px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.profile-info--details--followers-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.repos, .issues {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 900px;
 }
 
 .repo-container {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  width: 900px;
   border: 1px solid rgb(228, 228, 228);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.06), 0 1px 1px rgba(0, 0, 0, 0.13);
   border-radius: 5px;
   padding: 10px;
-  width: 90%;
   margin-top: 5px;
 }
 
 .repo-left {
-  max-width: 500px;
   padding-right: 10px;
+  width: 500px;
 }
 
 .repo-right {
-  width: 400px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .repo-info {
@@ -97,7 +119,7 @@ body, div, h1, h2, h3, h4, p, a, ul, li, input, textarea{
 
 .repo-info h4{
   display: block;
-  width: 500px;
+  width:
   color: rgb(107, 107, 107);
   font-weight: normal;
 }
@@ -111,18 +133,46 @@ body, div, h1, h2, h3, h4, p, a, ul, li, input, textarea{
   padding-right: 20px;
 }
 
-.issue-open{
-  font-size: 14px;
-  color: rgb(49, 163, 78);
+.issue-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid rgb(219, 219, 219);
+  padding: 15px 0;
 }
 
-.issue-closed{
-  font-size: 14px;
-  color: rgb(212, 25, 25);
+.issue-number {
 }
 
-.issue-text{
-  font-size: 14px;
+.issue-info {
+  width: 450px;
+}
+
+.issue-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 15px;
+  color: white;
+  padding: 5px;
+  margin: 10px 0;
+}
+
+.open {
+  background-color: rgb(40, 187, 72);
+}
+
+.closed {
+  background-color: rgb(207, 53, 53);
+}
+
+
+.issue-link {
+  text-decoration: none;
+  color: rgb(68, 144, 223);
+}
+
+.issue-heading {
+  display: flex;
 }
 
 .issue-btns-container{
@@ -131,39 +181,56 @@ body, div, h1, h2, h3, h4, p, a, ul, li, input, textarea{
 
 .issue-btn{
   display: block;
-  width: 65px;
-  background-color: rgb(246, 200, 110);
-  padding: 3px;
+  width: 100px;
+  border: 1px solid rgb(198, 198, 198);
+  background-color: white;
+  padding: 4px 0;
   margin: 0 3px 3px 0;
   border-radius: 4px;
-  font-size: 12px;
+  font-weight: normal;
+  font-size: 16px;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
+  outline: none;
+  user-select: none;
+  color: black;
+  transition: all 0.2s;
 }
 
-.issue-view-container{
-  display: flex;
-  flex-direction: column;
+.issue-btn:hover{
+  background-color: rgb(68, 144, 223);
+  color: white;
 }
 
-.issue-view-container label {
-  display: block;
-  width: 150px;
-  font-size: 14px;
-  font-weight: bold;
+.gray {
+  background-color: rgb(217, 217, 218);
 }
 
-.issue-view-container input, .issue-view-container textarea {
-  width: 350px;
-  font-size: 14px;
-  border: 1px solid rgb(223, 223, 223);
+
+.issue-form {
+  width: 450px;
 }
 
-.issue-view-container textarea {
-  height: 75px;
+.issue-form-btn {
+
 }
 
 .fa-pencil {
   cursor: pointer;
+}
+
+.issue-input {
+  width: inherit;
+  height: 25px;
+  font-size: 16px;
+  padding: 5px;
+  border: 1px solid rgb(228, 228, 228);
+}
+
+.create-issue {
+  margin: 0 30px 0 30px;
+  width: 150px;
+  background-color: rgb(130, 130, 130);
+  color: white;
 }

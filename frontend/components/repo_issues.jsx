@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { requestIssues } from '../actions/issue_actions';
-import { withRouter } from 'react-router';
-import IssueView from './issue_view';
+import { Link, withRouter } from 'react-router-dom';
+import IssueItem from './issue_item';
 
-const mapStateToProps = state => ({
-  issues: state.issues
+const mapStateToProps = (state, ownProps) => ({
+  issues: state.issues,
+  repoName: ownProps.match.params.repoName,
+  user: state.user
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -15,12 +17,25 @@ const mapDispatchToProps = (dispatch) => ({
 class RepoIssues extends React.Component {
   constructor(props){
     super(props)
+
+    this.state = {
+      editing: false,
+      title: "",
+      body: ""
+    }
+
+    this.toggleEditField = this.toggleEditField.bind(this);
   }
 
   componentWillMount(){
     this.props.requestIssues(this.props.repoName)
   }
 
+  update(field){
+    return e => {
+      this.setState({ [field]: e.target.value });
+    }
+  }
 
   filterIssues(){
     const repoName = this.props.repoName;
@@ -29,13 +44,13 @@ class RepoIssues extends React.Component {
       if(this.props.issues[repoName].length > 0){
         this.props.issues[repoName].forEach((issue, idx) => {
           repoIssues.push(
-            <IssueView issue={issue} key={idx}/>
+            <IssueItem issue={issue} repoName={repoName} key={idx}/>
           )
         })
       } else {
         repoIssues.push(
-          <div key={repoName}>
-            <p className="issue-text">There were never any issues for this repo.</p>
+          <div className="issue-container" key={repoName}>
+            <p>There were never any issues for this repo.</p>
           </div>
         )
       }
@@ -43,10 +58,41 @@ class RepoIssues extends React.Component {
     return repoIssues;
   }
 
+  createIssueBtn(){
+    if(this.state.editing){
+      return (
+        <form className="issue-form" onSubmit={this.submitNewIssue}>
+          <label><strong>Title:</strong></label>
+          <br />
+          <input className="issue-input" type="text" value={this.state.title} onChange={this.update('title')}/>
+          <br />
+          <br />
+          <label><strong>Body:</strong></label>
+          <br />
+          <textarea className="issue-input" type="text" value={this.state.body} onChange={this.update('body')}/>
+          <br />
+          <br />
+          <input className="issue-btn gray" type="submit" value={`Create Issue`}/>
+        </form>
+      )
+    }
+  }
+
+  toggleEditField(){
+    const editState = this.state.editing
+    this.setState({ editing: !editState, title: this.state.title, body: this.state.body})
+  }
+
   render(){
     return (
-      <div>
-        <h3>Issues</h3>
+      <div className="issues">
+        <h4><Link className="issue-link" to="/">naelkhann</Link> / <a className="issue-link" href={`https://github.com/${this.props.user.login}/${this.props.repoName}`}>{this.props.repoName}</a></h4>
+        <br />
+        <div className="issue-heading">
+          <h2>Issues</h2>
+          <h4 className="issue-btn create-issue" onClick={this.toggleEditField}>Create New Issue</h4>
+        </div>
+        {this.createIssueBtn()}
         {this.filterIssues()}
       </div>
       )

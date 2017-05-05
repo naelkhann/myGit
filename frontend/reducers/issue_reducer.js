@@ -1,4 +1,4 @@
-import { RECEIVE_ISSUES } from '../actions/issue_actions';
+import { RECEIVE_ISSUES, RECEIVE_ISSUE } from '../actions/issue_actions';
 
 const IssueReducer = (prevState = {}, action) => {
   switch(action.type){
@@ -10,6 +10,10 @@ const IssueReducer = (prevState = {}, action) => {
         action.issues.forEach(issue => issues[repoName].push(issue))
       }
       return Object.assign({}, prevState, issues);
+    case RECEIVE_ISSUE:
+      let repo_name = action.issue.repo_name
+      prevState.issues[repo_name].push(action.issue)
+      return Object.assign({}, prevState)
     default:
       return prevState;
   }

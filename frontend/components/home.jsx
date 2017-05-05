@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link, withRouter, Route } from 'react-router-dom';
 import { requestUser } from '../actions/user_actions.js';
 import Repos from './repos';
 
@@ -34,21 +35,21 @@ class Home extends React.Component {
           <div className="profile-info--container">
             <img className="profile-info--pic" src={avatar_url} alt={`${name} Profile Pic`}/>
             <div className="profile-info--details">
-              <p className="profile-info--details-login">{login}</p>
+              <p><a className="profile-info--details-login" href={`https://github.com/${login}`}>{login}</a></p>
               <p className="profile-info--details-login">{name}</p>
               <p>{bio}</p>
               <p><a href={`http://${blog}`}>{blog}</a></p>
               <div className="profile-info--details--followers">
                 <div className="profile-info--details--followers-text">
-                  <h4>Followers:</h4>
+                  <h4>Followers</h4>
                   <p className="profile-info--details-login">{followers}</p>
                 </div>
                 <div className="profile-info--details--followers-text">
-                  <h4>Following:</h4>
+                  <h4>Following</h4>
                   <p className="profile-info--details-login">{following}</p>
                 </div>
                 <div className="profile-info--details--followers-text">
-                  <h4>Repos:</h4>
+                  <h4>Repos</h4>
                   <p className="profile-info--details-login">{public_repos}</p>
                 </div>
               </div>
@@ -63,19 +64,9 @@ class Home extends React.Component {
     const user = this.props.user
 
     return (
-    <div>
-      <div className="top-bar">
-        <div className="top-bar-logo">
-          <img src="./assets/images/myGitLogo.png" alt="myGit Logo"/>
-        </div>
-        <div className="top-bar-info">
-          <h4>Welcome to myGit.</h4>
-          <p>You are signed in as {user.name}</p>
-        </div>
+      <div>
+        {this.renderProfileInfo()}
       </div>
-      {this.renderProfileInfo()}
-      <Repos user={user}/>
-    </div>
     )
   }
 }
